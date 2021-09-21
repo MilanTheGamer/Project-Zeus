@@ -1,0 +1,26 @@
+{
+    "name": "project-zeus",
+    "version": "1.0.0",
+    "description": "A Blockchain with focus on Scalability and Decentralization.",
+    "main": "./dist/index.js",
+    "scripts": {
+        "start": "node ./dist/index.js",
+        "dev": "ts-node ./src/index.ts",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MilanTheGamer/Project-Zeus.git"
+    },
+    "author": "Milan",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/MilanTheGamer/Project-Zeus/issues"
+    },
+    "homepage": "https://github.com/MilanTheGamer/Project-Zeus#readme",
+    "devDependencies": {
+        "ts-node": "^10.2.1",
+        "typescript": "^4.4.3"
+    },
+    "dependencies": {}
+}
