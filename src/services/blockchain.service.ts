@@ -1,10 +1,14 @@
+//Import Essential Modules
+import crypto, { createHash } from "crypto";
+let createHah = crypto.createHash("sha256");
+
 //Interfaces
 interface Block {
-    index: Number;
-    timestamp: String;
-    proof: any;
-    previousHash: String;
-    data: Object;
+    index: number;
+    timestamp: string;
+    proof: string;
+    previousHash: string;
+    data: object;
 }
 class Blockchain {
     //Define Class variables
@@ -16,7 +20,7 @@ class Blockchain {
     }
 
     //Create Block
-    createBlock = (proof: any, previousHash: String): Promise<Block> => {
+    createBlock = (proof: string, previousHash: string): Promise<Block> => {
         return new Promise((resolve, reject) => {
             try {
                 let block: Block = {
@@ -40,6 +44,29 @@ class Blockchain {
             try {
                 let lastBlock: Block = this.chain[-1];
                 resolve(lastBlock);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    };
+
+    //Proof of Work
+    proofOfWork = (previousProof: number): Promise<number> => {
+        return new Promise((resolve, reject) => {
+            try {
+                let newProof: number = 1;
+                let checkProof: boolean = false;
+                while (checkProof === false) {
+                    let hashOperation = createHah
+                        .update(String(newProof ** 2 - previousProof ** 2))
+                        .digest("hex");
+                    if (hashOperation.substring(0, 4) === "0000") {
+                        checkProof = true;
+                        resolve(newProof);
+                    } else {
+                        newProof++;
+                    }
+                }
             } catch (err) {
                 reject(err);
             }
