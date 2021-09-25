@@ -2,7 +2,7 @@
     "name": "project-zeus",
     "version": "1.0.0",
     "description": "A Blockchain with focus on Scalability and Decentralization.",
-    "main": "./dist/index.js",
+    "main": "./dist/bin/www.js",
     "scripts": {
         "start": "node -r dotenv/config ./dist/bin/www.js dotenv_config_path=./config/production.env",
         "start:dev": "nodemon -r dotenv/config ./dist/bin/www.js dotenv_config_path=./config/development.env",
