@@ -65,7 +65,21 @@ var Blockchain = /** @class */ (function () {
                 }
             });
         };
+        //Create Hashed Block
+        this.hash = function (block) {
+            return new Promise(function (resolve, reject) {
+                try {
+                    var encodedBlock = JSON.stringify(block);
+                    var hashedBlock = createHah.update(encodedBlock).digest("hex");
+                    resolve(hashedBlock);
+                }
+                catch (err) {
+                    reject(err);
+                }
+            });
+        };
         this.chain = [];
+        this.createBlock(1, "0");
     }
     return Blockchain;
 }());
