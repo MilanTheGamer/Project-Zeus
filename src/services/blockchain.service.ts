@@ -1,6 +1,6 @@
 //Import Essential Modules
-import crypto, { createHash } from "crypto";
-let createHah = crypto.createHash("sha256");
+import crypto from "crypto";
+// let createHash = crypto.createHash("sha256");
 
 //Interfaces
 interface Block {
@@ -8,7 +8,6 @@ interface Block {
     timestamp: string;
     proof: number;
     previousHash: string;
-    data: object;
 }
 class Blockchain {
     //Define Class variables
@@ -29,7 +28,6 @@ class Blockchain {
                     timestamp: String(new Date()),
                     proof: proof,
                     previousHash: previousHash,
-                    data: {},
                 };
                 this.chain.push(block);
                 resolve(block);
@@ -43,7 +41,7 @@ class Blockchain {
     getPreviousBlock = (): Promise<Block> => {
         return new Promise((resolve, reject) => {
             try {
-                let lastBlock: Block = this.chain[-1];
+                let lastBlock: Block = this.chain[this.chain.length - 1];
                 resolve(lastBlock);
             } catch (err) {
                 reject(err);
@@ -58,7 +56,8 @@ class Blockchain {
                 let newProof: number = 1;
                 let checkProof: boolean = false;
                 while (checkProof === false) {
-                    let hashOperation: string = createHah
+                    let createHash = crypto.createHash("sha256");
+                    let hashOperation: string = createHash
                         .update(String(newProof ** 2 - previousProof ** 2))
                         .digest("hex");
                     if (hashOperation.substring(0, 4) === "0000") {
@@ -79,7 +78,8 @@ class Blockchain {
         return new Promise((resolve, reject) => {
             try {
                 let encodedBlock: string = JSON.stringify(block);
-                let hashedBlock: string = createHah
+                let createHash = crypto.createHash("sha256");
+                let hashedBlock: string = createHash
                     .update(encodedBlock)
                     .digest("hex");
                 resolve(hashedBlock);
@@ -106,7 +106,8 @@ class Blockchain {
                     }
                     let previousProof: number = previousBlock.proof;
                     let proof: number = block.proof;
-                    let hashOperation: string = createHah
+                    let createHash = crypto.createHash("sha256");
+                    let hashOperation: string = createHash
                         .update(String(proof ** 2 - previousProof ** 2))
                         .digest("hex");
                     if (hashOperation.substring(0, 4) != "0000") {
@@ -122,6 +123,19 @@ class Blockchain {
                 reject(err);
             }
         });
+    };
+
+    //Mine Block
+    mineBlock = async () => {
+        try {
+            let previousBlock: Block = await this.getPreviousBlock();
+            let previousProof: number = previousBlock.proof;
+            let proof: number = await this.proofOfWork(previousProof);
+            let previousHash = await this.hash(previousBlock);
+            await this.createBlock(proof, previousHash);
+        } catch (err) {
+            console.log(err);
+        }
     };
 }
 

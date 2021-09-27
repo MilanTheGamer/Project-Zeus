@@ -1,14 +1,8 @@
 import express, { Application, Request, Response, NextFunction } from "express";
-
-//testHash
-import hash from "./utils/testHash";
+import blockchainRoute from "./routes/blockchain.route";
 
 const app: Application = express();
 
-app.get("/testHas", (req: Request, res: Response, next: NextFunction) => {
-    let hashStart = hash.substring(0, 4);
-    console.log(hashStart);
-    res.status(200).send("OK");
-});
+app.use("/api/blockchain", blockchainRoute);
 
 export default app;
