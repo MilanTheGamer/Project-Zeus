@@ -98,11 +98,14 @@ class Blockchain {
                 let previousBlock: Block = chain[0];
                 let blockIndex: number = 1;
                 let chainLength: number = chain.length;
+
                 while (blockIndex < chainLength) {
+                    console.log(blockIndex);
                     let block: Block = chain[blockIndex];
                     let previousHash: string = await this.hash(previousBlock);
                     if (block.previousHash != previousHash) {
                         resolve(false);
+                        break;
                     }
                     let previousProof: number = previousBlock.proof;
                     let proof: number = block.proof;
@@ -112,12 +115,14 @@ class Blockchain {
                         .digest("hex");
                     if (hashOperation.substring(0, 4) != "0000") {
                         resolve(false);
+                        break;
                     } else {
+                        if (blockIndex === chainLength - 1) {
+                            resolve(true);
+                        }
                         previousBlock = block;
                         blockIndex++;
                     }
-                    // CHECK BUG --- check if resolve happens before all the validations
-                    resolve(true);
                 }
             } catch (err) {
                 reject(err);

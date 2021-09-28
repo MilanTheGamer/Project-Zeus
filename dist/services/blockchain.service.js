@@ -131,12 +131,14 @@ var Blockchain = /** @class */ (function () {
                             _a.label = 1;
                         case 1:
                             if (!(blockIndex < chainLength)) return [3 /*break*/, 3];
+                            console.log(blockIndex);
                             block = chain[blockIndex];
                             return [4 /*yield*/, this.hash(previousBlock)];
                         case 2:
                             previousHash = _a.sent();
                             if (block.previousHash != previousHash) {
                                 resolve(false);
+                                return [3 /*break*/, 3];
                             }
                             previousProof = previousBlock.proof;
                             proof = block.proof;
@@ -146,13 +148,15 @@ var Blockchain = /** @class */ (function () {
                                 .digest("hex");
                             if (hashOperation.substring(0, 4) != "0000") {
                                 resolve(false);
+                                return [3 /*break*/, 3];
                             }
                             else {
+                                if (blockIndex === chainLength - 1) {
+                                    resolve(true);
+                                }
                                 previousBlock = block;
                                 blockIndex++;
                             }
-                            // CHECK BUG --- check if resolve happens before all the validations
-                            resolve(true);
                             return [3 /*break*/, 1];
                         case 3: return [3 /*break*/, 5];
                         case 4:

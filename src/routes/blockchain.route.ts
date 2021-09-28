@@ -24,4 +24,9 @@ router.get("/getChain", (req: Request, res: Response) => {
     res.status(200).json(data);
 });
 
+router.get("/isChainValid", async (req: Request, res: Response) => {
+    let validity: boolean = await blockchain.isChainValid();
+    res.status(200).send(validity);
+});
+
 export default router;
